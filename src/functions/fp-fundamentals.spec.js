@@ -1,20 +1,37 @@
 // implement fundamental operators in functional style:
 // reduce, map, filter, forEach
 
-describe('Functional Programming Fundamentals', () => {
+fdescribe('Functional Programming Fundamentals', () => {
 
-	describe('reduce', () => {
+	fdescribe('reduce', () => {
 		it('works according to specs', () => {
 			const data = [1, 2, 3, 4, 5];
 
 			// implement `reduce`
+			const reduce = (reducerFn, accumulator) =>
+				collection => {
+					let i = 0;
+					if (accumulator === undefined && collection.length > 0) {
+						accumulator = collection[0];
+						i = 1;
+					}
+					for (; i < collection.length; ++i) {
+						accumulator = reducerFn(accumulator, collection[i], i, collection);
+					}
+					return accumulator;
+				};
+
+			const sumReducer = (a, b) => a + b;
+			const concatReducer = (a, b) => `${a} ${b}`;
 
 			// implement `sumReducer`
-			let sumResult;
+			const sum = reduce(sumReducer);
+			let sumResult = sum(data);
 			expect(sumResult).toEqual(15);
 
 			// implement `concatReducer`
-			let concatResult;
+			const concat = reduce(concatReducer);
+			let concatResult = concat(data);
 			expect(concatResult).toEqual('1 2 3 4 5');
 		});
 	});
