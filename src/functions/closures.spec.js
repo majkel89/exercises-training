@@ -1,6 +1,6 @@
 fdescribe('Closures', () => {
 
-	fit('can hold private data - incrementer', () => {
+	it('can hold private data - incrementer', () => {
 		// write incrementer function below
 		// each `incrementer` call returns a function which, when called, increments the counter with +1 and returns the new value
 		// the initial value of the counter is 0
@@ -24,7 +24,7 @@ fdescribe('Closures', () => {
 		expect(inc2()).toEqual(4);
 	});
 
-	it('can hold private data - counter', () => {
+	fit('can hold private data - counter', () => {
 		// write counter function below
 		// each `counter` call returns an object with 2 functions, inc and dec
 		// `inc`, when called, acts as `incrementer` above
@@ -32,8 +32,17 @@ fdescribe('Closures', () => {
 		// the initial value of the counter is 0, same as in previous exercise
 		// the value itself is not directly accessible from the outside
 
-		function counter(){
-			//...
+		function counter(counter = 0){
+			return {
+				inc(amount = 1) {
+					counter += amount;
+					return counter;
+				},
+				dec(amount = 1) {
+					counter -= amount;
+					return counter;
+				},
+			};
 		}
 
 		let c1 = counter();
