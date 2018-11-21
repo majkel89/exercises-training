@@ -6,9 +6,11 @@ fdescribe('Closures', () => {
 		// the initial value of the counter is 0
 		// the value itself is not directly accessible from the outside
 
-		function incrementer() {
-			let counter = 0;
-			return () => ++counter;
+		function incrementer(counter = 0) {
+			return (amount = 1) => {
+				counter = counter + amount;
+				return counter;
+			};
 		}
 
 		let inc1 = incrementer();
