@@ -1,6 +1,6 @@
-describe('Closures', () => {
+fdescribe('Closures', () => {
 
-	it('can hold private data - incrementer', () => {
+	xit('can hold private data - incrementer', () => {
 		// write incrementer function below
 		// each `incrementer` call returns a function which, when called, increments the counter with +1 and returns the new value
 		// the initial value of the counter is 0
