@@ -1,13 +1,14 @@
 fdescribe('Closures', () => {
 
-	xit('can hold private data - incrementer', () => {
+	fit('can hold private data - incrementer', () => {
 		// write incrementer function below
 		// each `incrementer` call returns a function which, when called, increments the counter with +1 and returns the new value
 		// the initial value of the counter is 0
 		// the value itself is not directly accessible from the outside
 
-		function incrementer(){
-			//...
+		function incrementer() {
+			let counter = 0;
+			return () => ++counter;
 		}
 
 		let inc1 = incrementer();
