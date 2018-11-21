@@ -1,3 +1,5 @@
+import roundToInt from '../roundToInt';
+
 fdescribe('Closures', () => {
 
 	it('can hold private data - incrementer', () => {
@@ -24,7 +26,7 @@ fdescribe('Closures', () => {
 		expect(inc2()).toEqual(4);
 	});
 
-	fit('can hold private data - counter', () => {
+	it('can hold private data - counter', () => {
 		// write counter function below
 		// each `counter` call returns an object with 2 functions, inc and dec
 		// `inc`, when called, acts as `incrementer` above
@@ -63,8 +65,16 @@ fdescribe('Closures', () => {
 		// getBalance method shall return current balance, i.e. sum of all incomes minus sum of all outcomes
 		// come up with your own solution that satisfy above needs (there are many good solutions here!)
 
-		function finanseStorage(){
-			//...
+		function finanseStorage(balance = 0) {
+			const round2 = roundToInt(2);
+
+			balance = round2(balance);
+
+			return {
+				getBalance: () => balance / 100,
+				saveIncome: amount => balance += round2(amount),
+                saveOutcome: amount => balance -= round2(amount),
+			};
 		}
 
 		let f1 = finanseStorage();
