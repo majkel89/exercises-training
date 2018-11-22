@@ -3,6 +3,8 @@ import { shoppingData } from '../../data/shopping';
 
 const todos = db.getTodos();
 
+import reduce from '../reduce';
+
 fdescribe('Immutable ES6 operations', () => {
 
 	const john = {
@@ -20,12 +22,10 @@ fdescribe('Immutable ES6 operations', () => {
 		salary: 5000
 	};
 
-	fit('merge two objects', () => {
-		// define `merge2objects` function here
-        // for 2 given parameters, the function returns an new merged object
-        const es5Merge2objects = (o1, o2) => Object.assign({}, o1, o2);
-		const es6Merge2objects = (o1, o2) => ({ ...o1, ...o2 });
+    const es5Merge2objects = (o1, o2) => Object.assign({}, o1, o2);
+    const es6Merge2objects = (o1, o2) => ({ ...o1, ...o2 });
 
+    it('merge two objects', () => {
 		const mergeObject1 = {
             firstname: "John", lastname: "Lennon", profession: "musician", salary: 5000
         };
@@ -40,18 +40,17 @@ fdescribe('Immutable ES6 operations', () => {
 		expect(es6Merge2objects(paul, musician)).toEqual(mergeObject2);
 	});
 
-	it('merging multiple objects', () => {
-		// define `mergeManyObjects` function here
-		// same as above, but accepts multiple objects as input parameters 
+	fit('merging multiple objects', () => {
+		const mergeManyObjects = (...objects) => Object.assign({}, ...objects);
 
 		expect(mergeManyObjects({ id: 8492745921 }, john, musician)).toEqual({
 			id: 8492745921, firstname: "John", lastname: "Lennon", profession: "musician", salary: 5000
-		})
+		});
 
 		expect(mergeManyObjects({ id: 5193421984 }, paul, musician)).toEqual({
 			id: 5193421984, firstname: "Paul", lastname: "McCartney", profession: "musician", salary: 5000
 		})
-	})
+	});
 
 	it('strip static attribute from objects', () => {
 		// define `stripId` function here
