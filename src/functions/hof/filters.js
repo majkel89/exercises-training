@@ -19,9 +19,11 @@ export const and = (...conditions) =>
 export const isAmerican = hasNationality('US');
 export const isNotAmerican = not(isAmerican);
 export const isFrench = hasNationality('FR');
+export const isPolish = hasNationality('PL');
 export const isEuropean = employer => isNotAmerican(employer);
 
 export const hasContractType = contractType =>
     employer => employer.contractType === contractType;
 
 export const isPermanent = hasContractType('permanent');
+export const isContractor = hasContractType('contract');
