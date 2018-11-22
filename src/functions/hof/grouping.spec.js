@@ -3,33 +3,15 @@ import db from '../../../data/data'
 
 const employees = db.getEmployees();
 
+import {
+    group,
+    byType,
+    pickAll,
+    pickTotalPrice,
+    pickMaxTotalPrice,
+} from '../../grouping';
+
 fdescribe('Grouping Reducers', () => {
-
-	const getItemTotalPrice = item => Math.round(item.price * item.qty * 100) / 100;
-
-	const byKey = k => object => object[k];
-	const byType = byKey('type');
-
-	const group = (grouper, aggregator) =>
-		collection => collection.reduce((result, item) => {
-            const group = grouper(item);
-            result[group] = aggregator(result[group], item);
-            return result;
-		}, {});
-
-	const pickAll = (current, item) => {
-		current = current || [];
-		current.push(item);
-		return current;
-	};
-
-	const pickTotalPrice = (current, item) => {
-		return (current || 0) + getItemTotalPrice(item);
-	};
-
-	const pickMaxTotalPrice = (current, item) => {
-		return Math.max((current || 0), getItemTotalPrice(item));
-	};
 
 	fit('can split one big collection into smaller grouped collections', () => {
 		// group (count items) shopping data by 'type'
