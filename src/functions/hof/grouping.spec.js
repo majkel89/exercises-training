@@ -16,11 +16,14 @@ fdescribe('Grouping Reducers', () => {
 		}, {});
 
 	const pickAll = (current, item) => {
-		if (!current) {
-			current = [];
-		}
+		current = current || [];
 		current.push(item);
 		return current;
+	};
+
+	const pickTotalPrice = (total, item) => {
+		const value = item.price * item.qty;
+		return (total || 0) + value;
 	};
 
 	fit('can split one big collection into smaller grouped collections', () => {
@@ -33,9 +36,9 @@ fdescribe('Grouping Reducers', () => {
 		expect(groupedAggregate.Food.length).toEqual(3);
 	});
 
-	it('can also apply calculations to grouped items', () => {
+	fit('can also apply calculations to grouped items', () => {
 		// group (sum total prices) shopping data by 'type'
-		let sumAggregate;
+		let sumAggregate = group(byType, pickTotalPrice)(shoppingData);
 
 		expect(sumAggregate.Clothes).toEqual(63.6);
 		expect(sumAggregate.Music).toEqual(30.75);
