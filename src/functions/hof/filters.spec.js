@@ -9,7 +9,6 @@ import {
     knowsJs,
     isEuropean,
     and,
-    not,
     isFrench,
     isPermanent,
     isPolish,
@@ -19,7 +18,7 @@ import {
 	knows,
 	atLeast,
     isInOffice,
-} from "./filters";
+} from "../../filters";
 
 describe('Data Filtering', () => {
 	it('can filter employees who know JavaScript', () => {

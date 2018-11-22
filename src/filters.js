@@ -1,4 +1,4 @@
-import reduce from "../../reduce";
+import reduce from "./reduce";
 
 export const knows = skill =>
     employer => employer.skills.includes(skill);
