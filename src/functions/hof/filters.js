@@ -15,6 +15,8 @@ export const not = predicateFunction =>
 //     (...values) => conditions.reduce((condMet, fx) => condMet && fx(...values), true);
 export const and = (...conditions) =>
     (...parameters) => !conditions.find(condition => !condition(...parameters));
+export const or = (...conditions) =>
+    (...parameters) => !!conditions.find(condition => condition(...parameters));
 
 export const isAmerican = hasNationality('US');
 export const isNotAmerican = not(isAmerican);
@@ -27,3 +29,8 @@ export const hasContractType = contractType =>
 
 export const isPermanent = hasContractType('permanent');
 export const isContractor = hasContractType('contract');
+
+export const isFullStack = and(
+    and(knowsJs, hasSkill('HTML')),
+    or(hasSkill('Java'), hasSkill('.net'))
+);

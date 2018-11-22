@@ -6,13 +6,14 @@ const offices = db.getOffices();
 const projects = db.getProjects();
 
 import {
-	knowsJs,
-	isEuropean,
-	and,
-	isFrench,
-	isPermanent,
+    knowsJs,
+    isEuropean,
+    and,
+    isFrench,
+    isPermanent,
     isPolish,
-	isContractor,
+    isContractor,
+    isFullStack,
 } from "./filters";
 
 fdescribe('Data Filtering', () => {
@@ -49,10 +50,10 @@ fdescribe('Data Filtering', () => {
 		expect(PolishContractors.length).toEqual(221);
 	});
 
-	it('can filter FullStack developer employees', () => {
+	fit('can filter FullStack developer employees', () => {
 		// find all fullstack developer employees
 		// fullstack developer is a Frontend (JS _AND_ HTML) & (Java _OR_ .net)
-		let FullStackDevs;
+		let FullStackDevs = employees.filter(isFullStack);
 
 		expect(FullStackDevs.length).toEqual(442);
 	});
