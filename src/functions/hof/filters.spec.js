@@ -9,6 +9,7 @@ import {
     knowsJs,
     isEuropean,
     and,
+    not,
     isFrench,
     isPermanent,
     isPolish,
@@ -17,6 +18,7 @@ import {
 	hasSalaryBetween,
 	knows,
 	atLeast,
+    isInOffice,
 } from "./filters";
 
 fdescribe('Data Filtering', () => {
@@ -78,12 +80,17 @@ fdescribe('Data Filtering', () => {
 		expect(FPDevs.length).toEqual(93);
 	});
 
-	it('can filter employees having at least n skills from location', () => {
+	fit('can filter employees having at least n skills from location', () => {
 		// find all employees who have at least 3 skills from the following list:
 		// redux, react, Angular, AngularJS, rxjs
 		// and are located in
 		// office: Warszawa
-		let FPDevsFromWarszawa;
+        const skills = ['redux', 'react', 'Angular', 'AngularJS', 'rxjs'];
+
+        let FPDevsFromWarszawa = employees.filter(and(
+            atLeast(3, ...skills.map(knows)),
+			isInOffice('Warszawa')
+	    ));
 
 		expect(FPDevsFromWarszawa.length).toEqual(1);
 	});

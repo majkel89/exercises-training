@@ -40,3 +40,6 @@ export const hasSalaryBetween = (min, max) =>
 
 export const atLeast = (min, ...predicates) =>
     (...values) => predicates.filter(predicate => predicate(...values)).length >= min;
+
+export const isInOffice = office =>
+    employer => employer.office.includes(office);
