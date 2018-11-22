@@ -1,14 +1,18 @@
 import { shoppingData } from '../../data/shopping';
 import db from '../../data/data';
 
-describe('Collection Random Access', () => {
+fdescribe('Collection Random Access', () => {
 
-	it('can be used to pick random items', () => {
+	fit('can be used to pick random items', () => {
 		// write a closure which accepts a collection in the 1st step
 		// and, with no parameters, returns random item in the 2nd step
 		// like this: randomItemFrom([1,2,3])() 
 
-		randomItemOnceFrom// define `randomItemFrom` function here
+		const randomInt = (min, max) =>
+			min + Math.floor(Math.random() * (max - min));
+
+		const randomItemFrom = collection =>
+			() => collection[randomInt(0, collection.length)];
 
 		const randomShoppingItem = randomItemFrom(shoppingData);
 		for (let i = 0; i < 50; i++) {
@@ -21,7 +25,7 @@ describe('Collection Random Access', () => {
 		for (let i = 0; i < 50; i++) {
 			expect(employees.includes(randomEmployee())).toBe(true);
 		}
-	})
+	});
 
 	it('can be used to pick random items, each only once', () => {
 		// write a similar function as above (with the same signature)
