@@ -142,16 +142,16 @@ fdescribe('Data Filtering', () => {
 				.filter(([key, value]) => picker(value))
                 .map(([key]) => key);
 
-		const officesByEmployersCount = getOfficesByEmployersCount(employees);
+		// const officesByEmployersCount = getOfficesByEmployersCount(employees);
 
 		const getSmallOfficesList = filterAggregate(lt(50));
 		const getBigOfficesList = filterAggregate(gteq(50));
 
 		// find all employees working in small offices (< 50 employees)
-		let GuysWorkingInSmallOffices = employees.filter(isIn(getOfficeId, getSmallOfficesList(officesByEmployersCount)));
+		let GuysWorkingInSmallOffices = employees.filter(isIn(getOfficeId, getSmallOfficesList(getOfficesByEmployersCount(employees))));
 
 		// find other employees (working in offices with >= 50 employees)
-		let GuysWorkingInBigOffices = employees.filter(isIn(getOfficeId, getBigOfficesList(officesByEmployersCount)));
+		let GuysWorkingInBigOffices = employees.filter(isIn(getOfficeId, getBigOfficesList(getOfficesByEmployersCount(employees))));
 
 		expect(GuysWorkingInSmallOffices.length).toEqual(557);
 
