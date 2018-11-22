@@ -5,7 +5,7 @@ const employees = db.getEmployees();
 const offices = db.getOffices();
 const projects = db.getProjects();
 
-import { knowsJs, isEuropean } from "./filters";
+import {knowsJs, isEuropean, and, isFrench, isPermanent} from "./filters";
 
 fdescribe('Data Filtering', () => {
 	fit('can filter employees who know JavaScript', () => {
@@ -22,9 +22,14 @@ fdescribe('Data Filtering', () => {
 		expect(Europeans.length).toEqual(1059);
 	});
 
-	it('can filter French permanent employees', () => {
+	fit('can filter French permanent employees', () => {
 		// find all French permanent employees
-		let FrenchPermanents;
+		let FrenchPermanents = employees.filter(
+			and(
+				isFrench,
+				isPermanent
+			)
+		);
 
 		expect(FrenchPermanents.length).toEqual(37);
 	});
