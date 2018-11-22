@@ -9,6 +9,11 @@ fdescribe('Collection Random Access', () => {
     const randomItemFrom = collection =>
         () => collection[randomInt(0, collection.length)];
 
+    const randomItemOnceFrom = collection => {
+        collection = [ ...collection ];
+        return () => collection.splice(randomInt(0, collection.length - 1), 1)[0];
+    };
+
 	it('can be used to pick random items', () => {
 		// write a closure which accepts a collection in the 1st step
 		// and, with no parameters, returns random item in the 2nd step
@@ -27,7 +32,7 @@ fdescribe('Collection Random Access', () => {
 		}
 	});
 
-	fit('can be used to pick random items, each only once', () => {
+	it('can be used to pick random items, each only once', () => {
 		// write a similar function as above (with the same signature)
 		// but this time the closure shall iterate over elements in a random manner
 		// returning each element only once
@@ -35,11 +40,6 @@ fdescribe('Collection Random Access', () => {
 
 		// DESIGN: decide, how you would like the consumer to be notified that the collection
 		// has been depleted (is empty and won't return any item from now on)
-
-		const randomItemOnceFrom = collection => {
-            collection = [ ...collection ];
-			return () => collection.splice(randomInt(0, collection.length - 1), 1)[0];
-        };
 
 		const randomShoppingItem = randomItemOnceFrom(shoppingData);
 		let count, item = randomShoppingItem();
@@ -54,6 +54,13 @@ fdescribe('Collection Random Access', () => {
 
 		// define `randomItemFromGenerator` _generator_ here
 
+        const randomItemFromGenerator = function * (collection) {
+            const generator = randomItemOnceFrom(collection);
+            for (let item = generator(); item !== undefined; item = generator()) {
+                yield item;
+			}
+        };
+
 		const randomShoppingItemIterator = randomItemFromGenerator(shoppingData);
 		let count = 0;
 		for (let item of randomShoppingItemIterator){
@@ -61,5 +68,5 @@ fdescribe('Collection Random Access', () => {
 			expect(shoppingData.includes(item)).toBe(true);
 		}
 		expect(count).toBe(shoppingData.length);
-	})
+	});
 });
