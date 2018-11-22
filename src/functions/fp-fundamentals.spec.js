@@ -35,9 +35,13 @@ fdescribe('Functional Programming Fundamentals', () => {
 		});
 	});
 
-	describe('map', () => {
-		it('works according to specs', () => {
-			// implement `map`
+	fdescribe('map', () => {
+		fit('works according to specs', () => {
+			const map = cb =>
+				data => reduce((accumulator, v, i) => {
+					accumulator[i] = cb(v, i, accumulator);
+					return accumulator;
+				}, [...data])(data);
 
 			expect(map(a => a*2)([1, 2, 3, 4, 5])).toEqual([2, 4, 6, 8, 10]);
 
@@ -55,8 +59,8 @@ fdescribe('Functional Programming Fundamentals', () => {
 		});
 	});
 
-	fdescribe('forEach', () => {
-		fit('works according to specs', () => {
+	describe('forEach', () => {
+		it('works according to specs', () => {
 			const forEach = (cb) => data => {
 				reduce((mamGoWDupie, e) => { cb(e) }, null)(data);
 			};
