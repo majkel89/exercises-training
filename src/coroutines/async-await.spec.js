@@ -57,7 +57,7 @@ describe('async functions', () => {
 			});
 	})
 
-	it('should perform a simple business domain scenario', (done) => {
+	it('get total salaries by nationality - as an array of total salaries', (done) => {
 		// write an async function which will calculate and return total salaries of employees filtered by nationality
 
 		async function getTotalNationalSalary(nationality){
@@ -79,7 +79,7 @@ describe('async functions', () => {
 		});
 	})
 
-	it('should perform a complex business domain scenario', (done) => {
+	it('get total salaries by nationality - as a map (country code -> total salary)', (done) => {
 		// similarly to the previous exercise write an async function which will
 		// calculate and return total salaries of employees of all nationalities
 		// available in the system
@@ -98,5 +98,55 @@ describe('async functions', () => {
 				expect(DE).toBe(876208)
 				done();
 			});
+	})
+
+	it('get total project costs of projects given by id', (done) => {
+		// write an async function which will calculate total monthly cost of a project
+		// where the monthly cost is the sum of salaries of all team members + the manager
+		//
+		// consider writing an auxiliary `getProjectWithMembers` function
+
+		async function getProjectCost(projectId){
+			// async function body
+		}
+
+		Promise.all([
+			getProjectCost("1b05249e-1f6a-4bc2-bc1d-136c6adeb686")
+			.then(cost => expect(cost).toBe(65385)),
+			getProjectCost("5d379fe7-52d9-4831-8b66-be54d9aab25c")
+			.then(cost => expect(cost).toBe(105674)),
+			getProjectCost("6eb66b37-1996-4a2a-a110-be6a299bc541")
+			.then(cost => expect(cost).toBe(101438)),
+		]).then(done)
+	})
+
+	it('get office stats for a country (number of FE, BE, FS devs for each country - as a map)', (done) => {
+		// write an async function that, for a given country name (full name, not ISO code)
+		// will iterate over all its offices and related employees
+		// and count the number of frontend, backend and fullstack developers
+		//
+		// use filtering functions:
+		// isFrontendDev, isBackendDev, isFullStack
+
+		async function getOfficeStats(country){
+			// async function body
+		}
+
+		Promise.all([
+			getOfficeStats('Poland')
+				.then(stats => expect(stats).toEqual({
+					"Warszawa": { "frontend": 20, "backend": 31, "fullstack": 13 },
+					"Radom": { "frontend": 15, "backend": 22, "fullstack": 8 },
+					"Łódź": { "frontend": 86, "backend": 139, "fullstack": 56 },
+					"Wrocław": { "frontend": 19, "backend": 34, "fullstack": 16 },
+					"Lublin": { "frontend": 43, "backend": 74, "fullstack": 33 },
+					"Gdańsk": { "frontend": 24, "backend": 41, "fullstack": 15 }
+				})),
+			getOfficeStats('Spain')
+				.then(stats => expect(stats).toEqual({
+					"Madrid": { "frontend": 19, "backend": 28, "fullstack": 14 },
+					"Granada": { frontend: 7, backend: 8, fullstack: 4 }
+				})),
+		]).then(done)
 	})
 })
