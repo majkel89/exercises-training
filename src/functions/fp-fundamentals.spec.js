@@ -49,8 +49,8 @@ fdescribe('Functional Programming Fundamentals', () => {
 		});
 	});
 
-	fdescribe('filter', () => {
-		fit('works according to specs', () => {
+	describe('filter', () => {
+		it('works according to specs', () => {
 			const filter = cb =>
 				reduce((acc, v, i) => {
 					if (cb(v, i, acc)) {
@@ -67,18 +67,17 @@ fdescribe('Functional Programming Fundamentals', () => {
 
 	describe('forEach', () => {
 		it('works according to specs', () => {
-			const forEach = (cb) => data => {
-				reduce((mamGoWDupie, e) => { cb(e) }, null)(data);
-			};
+			const forEach = cb =>
+				reduce((_, v, i, arr) => { cb(v, i, arr) }, null);
 
 			const spy1 = jasmine.createSpy();
 
 			forEach(spy1)(['a', 'b', 'c', 'd']);
 			expect(spy1).toHaveBeenCalledTimes(4);
-			expect(spy1).toHaveBeenCalledWith('a', ['a', 'b', 'c', 'd']);
-			expect(spy1).toHaveBeenCalledWith('b', ['a', 'b', 'c', 'd']);
-			expect(spy1).toHaveBeenCalledWith('c', ['a', 'b', 'c', 'd']);
-			expect(spy1).toHaveBeenCalledWith('d', ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('a', 0, ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('b', 1, ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('c', 2, ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('d', 3, ['a', 'b', 'c', 'd']);
 		});
 	});
 });
