@@ -1,7 +1,7 @@
 import { shoppingData } from '../../data/shopping';
 import db from '../../data/data';
 
-fdescribe('Collection Random Access', () => {
+describe('Collection Random Access', () => {
 
     const randomInt = (min, max) =>
         min + Math.floor(Math.random() * (max - min));

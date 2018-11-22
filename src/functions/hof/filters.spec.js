@@ -5,17 +5,19 @@ const employees = db.getEmployees();
 const offices = db.getOffices();
 const projects = db.getProjects();
 
-describe('Data Filtering', () => {
-	it('can filter employees who know JavaScript', () => {
+import { knowsJs, isEuropean } from "./filters";
+
+fdescribe('Data Filtering', () => {
+	fit('can filter employees who know JavaScript', () => {
 		// find all employees who have 'JavaScript' skill
-		let JSDevs;
+		let JSDevs = employees.filter(knowsJs);
 
 		expect(JSDevs.length).toEqual(633);
 	});
 
-	it('can filter European employees', () => {
+	fit('can filter European employees', () => {
 		// find all European employees (non-US)
-		let Europeans;
+		let Europeans = employees.filter(isEuropean);
 
 		expect(Europeans.length).toEqual(1059);
 	});
@@ -119,8 +121,8 @@ describe('Data Filtering', () => {
 		// find all employees assigned (or) unassigned to any projects
 		let all, assigned, unassigned;
 
-		expect(all.length).toBe(1311)
-		expect(assigned.length).toBe(792)
-		expect(unassigned.length).toBe(519)
+		expect(all.length).toBe(1311);
+		expect(assigned.length).toBe(792);
+		expect(unassigned.length).toBe(519);
 	});
 });
