@@ -3,12 +3,30 @@ import db from '../../../data/data'
 
 const employees = db.getEmployees();
 
-describe('Grouping Reducers', () => {
+fdescribe('Grouping Reducers', () => {
 
-	it('can split one big collection into smaller grouped collections', () => {
+	const byKey = k => object => object[k];
+	const byType = byKey('type');
+
+	const group = (grouper, aggregator) =>
+		collection => collection.reduce((result, item) => {
+            const group = grouper(item);
+            result[group] = aggregator(result[group], item);
+            return result;
+		}, {});
+
+	const pickAll = (current, item) => {
+		if (!current) {
+			current = [];
+		}
+		current.push(item);
+		return current;
+	};
+
+	fit('can split one big collection into smaller grouped collections', () => {
 		// group (count items) shopping data by 'type'
 		// return an object that, for each shopping data type, has a count of occurences
-		let groupedAggregate;
+		let groupedAggregate = group(byType, pickAll)(shoppingData);
 
 		expect(groupedAggregate.Clothes.length).toEqual(4);
 		expect(groupedAggregate.Music.length).toEqual(3);

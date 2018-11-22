@@ -2,7 +2,7 @@
 // reduce, map, filter, forEach
 import reduce from '../reduce';
 
-fdescribe('Functional Programming Fundamentals', () => {
+describe('Functional Programming Fundamentals', () => {
 
 	describe('reduce', () => {
 		it('works according to specs', () => {

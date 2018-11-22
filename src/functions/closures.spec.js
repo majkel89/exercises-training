@@ -1,6 +1,6 @@
 import roundToInt from '../roundToInt';
 
-fdescribe('Closures', () => {
+describe('Closures', () => {
 
 	it('can hold private data - incrementer', () => {
 		// write incrementer function below
