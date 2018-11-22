@@ -5,6 +5,8 @@ const employees = db.getEmployees();
 
 fdescribe('Grouping Reducers', () => {
 
+	const getItemTotalPrice = item => Math.round(item.price * item.qty * 100) / 100;
+
 	const byKey = k => object => object[k];
 	const byType = byKey('type');
 
@@ -21,9 +23,12 @@ fdescribe('Grouping Reducers', () => {
 		return current;
 	};
 
-	const pickTotalPrice = (total, item) => {
-		const value = item.price * item.qty;
-		return (total || 0) + value;
+	const pickTotalPrice = (current, item) => {
+		return (current || 0) + getItemTotalPrice(item);
+	};
+
+	const pickMaxTotalPrice = (current, item) => {
+		return Math.max((current || 0), getItemTotalPrice(item));
 	};
 
 	fit('can split one big collection into smaller grouped collections', () => {
@@ -45,9 +50,9 @@ fdescribe('Grouping Reducers', () => {
 		expect(sumAggregate.Food).toEqual(65.1);
 	});
 
-	it('can perform further operations on grouped items', () => {
+	fit('can perform further operations on grouped items', () => {
 		// group (find max total price) shopping data by 'type'
-		let maxPriceAggregate;
+		let maxPriceAggregate = group(byType, pickMaxTotalPrice)(shoppingData);
 
 		expect(maxPriceAggregate).toEqual({Clothes: 46.0, Music: 11.90, Food: 33.6});
 	});
