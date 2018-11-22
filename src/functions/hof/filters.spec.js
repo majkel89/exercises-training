@@ -18,9 +18,10 @@ import {
 	knows,
 	atLeast,
     isInOffice,
+    isExpiringBetween,
 } from "../../filters";
 
-describe('Data Filtering', () => {
+fdescribe('Data Filtering', () => {
 	it('can filter employees who know JavaScript', () => {
 		// find all employees who have 'JavaScript' skill
 		let JSDevs = employees.filter(knowsJs);
@@ -94,14 +95,16 @@ describe('Data Filtering', () => {
 		expect(FPDevsFromWarszawa.length).toEqual(1);
 	});
 
-	it('can filter employees whose account expires in a particular period of time', () => {
+	fit('can filter employees whose account expires in a particular period of time', () => {
 		// find employees byaccount expiration date range
 		let theseGuys;
 
 		const period1Start = '2018-12-01', period1End = '2018-12-31';
+        theseGuys = employees.filter(isExpiringBetween(period1Start, period1End));
 		expect(theseGuys.length).toEqual(43);
 
 		const period2Start = new Date('2019-01-01'), period2End = new Date('2019-01-31');
+        theseGuys = employees.filter(isExpiringBetween(period2Start, period2End));
 		expect(theseGuys.length).toEqual(34);
 	});
 

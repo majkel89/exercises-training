@@ -11,9 +11,9 @@ import {
     pickMaxTotalPrice,
 } from '../../grouping';
 
-fdescribe('Grouping Reducers', () => {
+describe('Grouping Reducers', () => {
 
-	fit('can split one big collection into smaller grouped collections', () => {
+	it('can split one big collection into smaller grouped collections', () => {
 		// group (count items) shopping data by 'type'
 		// return an object that, for each shopping data type, has a count of occurences
 		let groupedAggregate = group(byType, pickAll)(shoppingData);
@@ -23,7 +23,7 @@ fdescribe('Grouping Reducers', () => {
 		expect(groupedAggregate.Food.length).toEqual(3);
 	});
 
-	fit('can also apply calculations to grouped items', () => {
+	it('can also apply calculations to grouped items', () => {
 		// group (sum total prices) shopping data by 'type'
 		let sumAggregate = group(byType, pickTotalPrice)(shoppingData);
 
@@ -32,7 +32,7 @@ fdescribe('Grouping Reducers', () => {
 		expect(sumAggregate.Food).toEqual(65.1);
 	});
 
-	fit('can perform further operations on grouped items', () => {
+	it('can perform further operations on grouped items', () => {
 		// group (find max total price) shopping data by 'type'
 		let maxPriceAggregate = group(byType, pickMaxTotalPrice)(shoppingData);
 

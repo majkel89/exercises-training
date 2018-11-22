@@ -36,10 +36,17 @@ export const isFullStack = and(
 );
 
 export const hasSalaryBetween = (min, max) =>
-    employer => employer.salary >= min && employer.salary <= max;
+    employer => min <= employer.salary && employer.salary <= max;
 
 export const atLeast = (min, ...predicates) =>
     (...values) => predicates.filter(predicate => predicate(...values)).length >= min;
 
 export const isInOffice = office =>
     employer => employer.office.includes(office);
+
+export const isExpiringBetween = (from, to) =>
+    employer => {
+        const date = new Date(employer.expiresAt);
+        return new Date(from).valueOf() <= date.valueOf() &&
+               date.valueOf() <= new Date(to).valueOf();
+    };
