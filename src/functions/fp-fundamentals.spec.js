@@ -35,8 +35,8 @@ fdescribe('Functional Programming Fundamentals', () => {
 		});
 	});
 
-	fdescribe('map', () => {
-		fit('works according to specs', () => {
+	describe('map', () => {
+		it('works according to specs', () => {
 			const map = cb =>
 				data => reduce((accumulator, v, i) => {
 					accumulator[i] = cb(v, i, accumulator);
@@ -49,9 +49,15 @@ fdescribe('Functional Programming Fundamentals', () => {
 		});
 	});
 
-	describe('filter', () => {
-		it('works according to specs', () => {
-			// implement `filter`
+	fdescribe('filter', () => {
+		fit('works according to specs', () => {
+			const filter = cb =>
+				reduce((acc, v, i) => {
+					if (cb(v, i, acc)) {
+						acc.push(v);
+					}
+					return acc;
+				}, []);
 
 			expect(filter(a => a % 2 === 0)([1, 2, 3, 4, 5])).toEqual([2, 4]);
 
