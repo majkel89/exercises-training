@@ -3,9 +3,7 @@ import { shoppingData } from '../../data/shopping';
 
 const todos = db.getTodos();
 
-import reduce from '../reduce';
-
-fdescribe('Immutable ES6 operations', () => {
+describe('Immutable ES6 operations', () => {
 
 	const john = {
 		firstname: "John",
@@ -52,7 +50,7 @@ fdescribe('Immutable ES6 operations', () => {
 		})
 	});
 
-	fit('strip static attribute from objects', () => {
+	it('strip static attribute from objects', () => {
 		const stripId = ({ id, ...rest }) => ({ ...rest });
 
 		// all following expectations check the same - `id` attr should have been removed
@@ -96,15 +94,21 @@ fdescribe('Immutable ES6 operations', () => {
 		// JS would get a syntax error, for not treating {} as a literal, but code block
 		// therefore, you additionally have to surround entire line with parenthesis: (...)
 
+		const stripKey = (key, object) => {
+			let clone = { ...object };
+			delete clone[key];
+			return clone;
+		};
+
 		expect(stripKey('firstname', {
 			id: 8492745921, firstname: "John", lastname: "Lennon"
 		})).toEqual({
 			id: 8492745921, lastname: "Lennon"
-		})
+		});
 
 		expect(stripKey('qty',
 			stripKey('price', shoppingData[0]))).toEqual({
 				type: 'Clothes', name: 'Socks', id: 421801449988
 			})
 	})
-})
+});
