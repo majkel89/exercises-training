@@ -16,12 +16,13 @@ import {
     isFullStack,
     hasSalaryAbove,
     hasSalaryBelow,
-	hasSalaryBetween,
-	knows,
-	atLeast,
+    hasSalaryBetween,
+    knows,
+    atLeast,
     isInOffice,
-    isExpiringBetween,
+    isExpiringBetween, isIn, lt, gteq,
 } from "../../filters";
+import {group, pickCount} from "../../grouping";
 
 fdescribe('Data Filtering', () => {
 	it('can filter employees who know JavaScript', () => {
@@ -131,12 +132,26 @@ fdescribe('Data Filtering', () => {
 		expect(theseGuys.length).toEqual(employees.filter(isFullStack).length);
 	});
 
-	it('can filter employees who work in small offices (at most 50 people in an office)', () => {
+	fit('can filter employees who work in small offices (at most 50 people in an office)', () => {
+		const getOfficeId = item => item.office.join('-');
+
+		const getOfficesByEmployersCount = group(getOfficeId, pickCount);
+
+		const filterAggregate = picker =>
+			collection => Object.entries(collection)
+				.filter(([key, value]) => picker(value))
+                .map(([key]) => key);
+
+		const officesByEmployersCount = getOfficesByEmployersCount(employees);
+
+		const getSmallOfficesList = filterAggregate(lt(50));
+		const getBigOfficesList = filterAggregate(gteq(50));
+
 		// find all employees working in small offices (< 50 employees)
-		let GuysWorkingInSmallOffices;
+		let GuysWorkingInSmallOffices = employees.filter(isIn(getOfficeId, getSmallOfficesList(officesByEmployersCount)));
 
 		// find other employees (working in offices with >= 50 employees)
-		let GuysWorkingInBigOffices;
+		let GuysWorkingInBigOffices = employees.filter(isIn(getOfficeId, getBigOfficesList(officesByEmployersCount)));
 
 		expect(GuysWorkingInSmallOffices.length).toEqual(557);
 

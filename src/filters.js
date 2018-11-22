@@ -52,3 +52,9 @@ export const isExpiringBetween = (from, to) =>
         return new Date(from).valueOf() <= date.valueOf() &&
                date.valueOf() <= new Date(to).valueOf();
     };
+
+export const isIn = (picker, values) =>
+    (...parameters) => values.includes(picker(...parameters));
+
+export const lt = limit => value => value < limit;
+export const gteq = limit => value => value >= limit;

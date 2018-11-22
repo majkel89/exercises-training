@@ -16,6 +16,8 @@ export const pickAll = (current, item) => {
     return current;
 };
 
+export const pickCount = current => (current || 0) + 1;
+
 export const pickTotalPrice = (current, item) => {
     return (current || 0) + getItemTotalPrice(item);
 };
