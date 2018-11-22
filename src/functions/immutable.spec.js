@@ -40,7 +40,7 @@ fdescribe('Immutable ES6 operations', () => {
 		expect(es6Merge2objects(paul, musician)).toEqual(mergeObject2);
 	});
 
-	fit('merging multiple objects', () => {
+	it('merging multiple objects', () => {
 		const mergeManyObjects = (...objects) => Object.assign({}, ...objects);
 
 		expect(mergeManyObjects({ id: 8492745921 }, john, musician)).toEqual({
@@ -52,20 +52,19 @@ fdescribe('Immutable ES6 operations', () => {
 		})
 	});
 
-	it('strip static attribute from objects', () => {
-		// define `stripId` function here
-		// it will return an immutable version of input object with `id` removed
+	fit('strip static attribute from objects', () => {
+		const stripId = ({ id, ...rest }) => ({ ...rest });
 
 		// all following expectations check the same - `id` attr should have been removed
 		expect(stripId({
 			id: 8492745921, firstname: "John", lastname: "Lennon"
 		})).toEqual({
 			firstname: "John", lastname: "Lennon"
-		})
+		});
 
 		expect(stripId(shoppingData[0])).toEqual({
 			type: 'Clothes', name: 'Socks', price: 1.00, qty: 5
-		})
+		});
 
 		expect(todos.slice(0, 5).map(stripId)).toEqual([{
 			"title": "Networked methodical function Shoes",
@@ -83,7 +82,7 @@ fdescribe('Immutable ES6 operations', () => {
 			"title": "Seamless homogeneous functionalities Car",
 			"marked": false
 		}])
-	})
+	});
 
 	it('strip dynamic attribute from objects', () => {
 		// define `stripKey` function here
