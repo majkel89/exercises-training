@@ -1,9 +1,9 @@
 import reduce from "../../reduce";
 
-export const hasSkill = skill =>
+export const knows = skill =>
     employer => employer.skills.includes(skill);
 
-export const knowsJs = hasSkill('JavaScript');
+export const knowsJs = knows('JavaScript');
 
 export const hasNationality = nationality =>
     employer => employer.nationality === nationality;
@@ -31,8 +31,8 @@ export const isPermanent = hasContractType('permanent');
 export const isContractor = hasContractType('contract');
 
 export const isFullStack = and(
-    and(knowsJs, hasSkill('HTML')),
-    or(hasSkill('Java'), hasSkill('.net'))
+    and(knowsJs, knows('HTML')),
+    or(knows('Java'), knows('.net'))
 );
 
 export const hasSalaryBetween = (min, max) =>

@@ -15,7 +15,7 @@ import {
     isContractor,
     isFullStack,
 	hasSalaryBetween,
-	hasSkill,
+	knows,
 	atLeast,
 } from "./filters";
 
@@ -73,7 +73,7 @@ fdescribe('Data Filtering', () => {
 		// redux, react, Angular, AngularJS, rxjs
 		const skills = ['redux', 'react', 'Angular', 'AngularJS', 'rxjs'];
 
-		let FPDevs = employees.filter(atLeast(3, ...skills.map(hasSkill)));
+		let FPDevs = employees.filter(atLeast(3, ...skills.map(knows)));
 
 		expect(FPDevs.length).toEqual(93);
 	});
