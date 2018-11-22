@@ -13,7 +13,7 @@ import {
     isPermanent,
     isPolish,
     isContractor,
-    isFullStack,
+    isFullStack, hasSalaryBetween,
 } from "./filters";
 
 fdescribe('Data Filtering', () => {
@@ -58,9 +58,9 @@ fdescribe('Data Filtering', () => {
 		expect(FullStackDevs.length).toEqual(442);
 	});
 
-	it('can filter FullStack developers with pretty small (3000-5000) salary', () => {
+	fit('can filter FullStack developers with pretty small (3000-5000) salary', () => {
 		// find all fullstack developers with pretty small (3000-5000) salary
-		let theseGuys;
+		let theseGuys = employees.filter(and(isFullStack, hasSalaryBetween(3000, 5000)));
 
 		expect(theseGuys.length).toEqual(97);
 	});

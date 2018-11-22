@@ -34,3 +34,6 @@ export const isFullStack = and(
     and(knowsJs, hasSkill('HTML')),
     or(hasSkill('Java'), hasSkill('.net'))
 );
+
+export const hasSalaryBetween = (min, max) =>
+    employer => employer.salary >= min && employer.salary <= max;
