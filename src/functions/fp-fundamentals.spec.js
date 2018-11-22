@@ -3,23 +3,22 @@
 
 fdescribe('Functional Programming Fundamentals', () => {
 
-	fdescribe('reduce', () => {
+    const reduce = (reducerFn, accumulator) =>
+        collection => {
+            let i = 0;
+            if (accumulator === undefined && collection.length > 0) {
+                accumulator = collection[0];
+                i = 1;
+            }
+            for (; i < collection.length; ++i) {
+                accumulator = reducerFn(accumulator, collection[i], i, collection);
+            }
+            return accumulator;
+        };
+
+	describe('reduce', () => {
 		it('works according to specs', () => {
 			const data = [1, 2, 3, 4, 5];
-
-			// implement `reduce`
-			const reduce = (reducerFn, accumulator) =>
-				collection => {
-					let i = 0;
-					if (accumulator === undefined && collection.length > 0) {
-						accumulator = collection[0];
-						i = 1;
-					}
-					for (; i < collection.length; ++i) {
-						accumulator = reducerFn(accumulator, collection[i], i, collection);
-					}
-					return accumulator;
-				};
 
 			const sumReducer = (a, b) => a + b;
 			const concatReducer = (a, b) => `${a} ${b}`;
@@ -56,18 +55,20 @@ fdescribe('Functional Programming Fundamentals', () => {
 		});
 	});
 
-	describe('forEach', () => {
-		it('works according to specs', () => {
-			// implement `forEach`
+	fdescribe('forEach', () => {
+		fit('works according to specs', () => {
+			const forEach = (cb) => data => {
+				reduce((mamGoWDupie, e) => { cb(e) }, null)(data);
+			};
 
-			const spy1 = jasmine.createSpy()
+			const spy1 = jasmine.createSpy();
 
-			forEach(spy1)(['a', 'b', 'c', 'd'])
+			forEach(spy1)(['a', 'b', 'c', 'd']);
 			expect(spy1).toHaveBeenCalledTimes(4);
-			expect(spy1).toHaveBeenCalledWith('a', 0, ['a', 'b', 'c', 'd']);
-			expect(spy1).toHaveBeenCalledWith('b', 1, ['a', 'b', 'c', 'd']);
-			expect(spy1).toHaveBeenCalledWith('c', 2, ['a', 'b', 'c', 'd']);
-			expect(spy1).toHaveBeenCalledWith('d', 3, ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('a', ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('b', ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('c', ['a', 'b', 'c', 'd']);
+			expect(spy1).toHaveBeenCalledWith('d', ['a', 'b', 'c', 'd']);
 		});
 	});
 });
