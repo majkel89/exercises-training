@@ -14,6 +14,8 @@ import {
     isPolish,
     isContractor,
     isFullStack,
+    hasSalaryAbove,
+    hasSalaryBelow,
 	hasSalaryBetween,
 	knows,
 	atLeast,
@@ -108,20 +110,24 @@ fdescribe('Data Filtering', () => {
 		expect(theseGuys.length).toEqual(34);
 	});
 
-	it('can filter FullStack developers with a specified range of salary', () => {
+	fit('can filter FullStack developers with a specified range of salary', () => {
 		// find employees by salary ranges
 		let theseGuys;
 
 		// salary 3000+
+        theseGuys = employees.filter(and(isFullStack, hasSalaryAbove(3000)));
 		expect(theseGuys.length).toEqual(340);
 
 		// salary 5000-
+        theseGuys = employees.filter(and(isFullStack, hasSalaryBelow(5000)));
 		expect(theseGuys.length).toEqual(199);
 
 		// salary 3000-5000
+        theseGuys = employees.filter(and(isFullStack, hasSalaryBetween(3000, 5000)));
 		expect(theseGuys.length).toEqual(97);
 
 		// salary: any
+        theseGuys = employees.filter(isFullStack);
 		expect(theseGuys.length).toEqual(employees.filter(isFullStack).length);
 	});
 

@@ -35,8 +35,10 @@ export const isFullStack = and(
     or(knows('Java'), knows('.net'))
 );
 
-export const hasSalaryBetween = (min, max) =>
-    employer => min <= employer.salary && employer.salary <= max;
+export const hasSalaryAbove = min => employer => min <= employer.salary;
+export const hasSalaryBelow = max => employer => employer.salary <= max;
+
+export const hasSalaryBetween = (min, max) => and(hasSalaryAbove(min), hasSalaryBelow(max));
 
 export const atLeast = (min, ...predicates) =>
     (...values) => predicates.filter(predicate => predicate(...values)).length >= min;
