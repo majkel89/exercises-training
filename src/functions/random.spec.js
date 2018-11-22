@@ -3,16 +3,16 @@ import db from '../../data/data';
 
 fdescribe('Collection Random Access', () => {
 
-	fit('can be used to pick random items', () => {
+    const randomInt = (min, max) =>
+        min + Math.floor(Math.random() * (max - min));
+
+    const randomItemFrom = collection =>
+        () => collection[randomInt(0, collection.length)];
+
+	it('can be used to pick random items', () => {
 		// write a closure which accepts a collection in the 1st step
 		// and, with no parameters, returns random item in the 2nd step
-		// like this: randomItemFrom([1,2,3])() 
-
-		const randomInt = (min, max) =>
-			min + Math.floor(Math.random() * (max - min));
-
-		const randomItemFrom = collection =>
-			() => collection[randomInt(0, collection.length)];
+		// like this: randomItemFrom([1,2,3])()
 
 		const randomShoppingItem = randomItemFrom(shoppingData);
 		for (let i = 0; i < 50; i++) {
@@ -27,7 +27,7 @@ fdescribe('Collection Random Access', () => {
 		}
 	});
 
-	it('can be used to pick random items, each only once', () => {
+	fit('can be used to pick random items, each only once', () => {
 		// write a similar function as above (with the same signature)
 		// but this time the closure shall iterate over elements in a random manner
 		// returning each element only once
@@ -36,7 +36,10 @@ fdescribe('Collection Random Access', () => {
 		// DESIGN: decide, how you would like the consumer to be notified that the collection
 		// has been depleted (is empty and won't return any item from now on)
 
-		// define `randomItemOnceFrom` function here
+		const randomItemOnceFrom = collection => {
+            collection = [ ...collection ];
+			return () => collection.splice(randomInt(0, collection.length - 1), 1)[0];
+        };
 
 		const randomShoppingItem = randomItemOnceFrom(shoppingData);
 		let count, item = randomShoppingItem();
@@ -44,7 +47,7 @@ fdescribe('Collection Random Access', () => {
 			expect(shoppingData.includes(item)).toBe(true);
 		}
 		expect(count).toBe(shoppingData.length);
-	})
+	});
 
 	it('can be used to pick random items, each only once, as a generator', () => {
 		// same as above, but write it as an ES6 generator
@@ -59,4 +62,4 @@ fdescribe('Collection Random Access', () => {
 		}
 		expect(count).toBe(shoppingData.length);
 	})
-})
+});
