@@ -1,7 +1,7 @@
 // implement fundamental operators in functional style:
 // reduce, map, filter, forEach
 
-fdescribe('Functional Programming Fundamentals', () => {
+describe('Functional Programming Fundamentals', () => {
 
     const reduce = (reducerFn, accumulator) =>
         collection => {
@@ -38,14 +38,25 @@ fdescribe('Functional Programming Fundamentals', () => {
 	describe('map', () => {
 		it('works according to specs', () => {
 			const map = cb =>
-				data => reduce((accumulator, v, i) => {
-					accumulator[i] = cb(v, i, accumulator);
+				data => reduce((accumulator, v, i, arr) => {
+					accumulator[i] = cb(v, i, arr);
 					return accumulator;
 				}, [...data])(data);
 
-			expect(map(a => a*2)([1, 2, 3, 4, 5])).toEqual([2, 4, 6, 8, 10]);
+			const prettierMap = cb => reduce((acc, v, i, arr) => [...acc, cb(v, i, arr)], []);
+			const optimizedPrettierMap = cb => reduce((acc, v, i, arr) => {
+				acc.push(cb(v, i, arr));
+				return acc;
+			}, []);
 
-			expect(map(a => '' + a)([1, 2, 3, 4, 5])).toEqual(['1', '2', '3', '4', '5']);
+			expect(map(a => a*2)([1, 2, 3, 4, 5])).toEqual([2, 4, 6, 8, 10]);
+			expect(map(a => `${a}`)([1, 2, 3, 4, 5])).toEqual(['1', '2', '3', '4', '5']);
+
+			expect(prettierMap(a => a*2)([1, 2, 3, 4, 5])).toEqual([2, 4, 6, 8, 10]);
+			expect(prettierMap(a => `${a}`)([1, 2, 3, 4, 5])).toEqual(['1', '2', '3', '4', '5']);
+
+			expect(optimizedPrettierMap(a => a*2)([1, 2, 3, 4, 5])).toEqual([2, 4, 6, 8, 10]);
+			expect(optimizedPrettierMap(a => `${a}`)([1, 2, 3, 4, 5])).toEqual(['1', '2', '3', '4', '5']);
 		});
 	});
 
