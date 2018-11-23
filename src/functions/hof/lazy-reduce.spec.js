@@ -3,14 +3,23 @@ import db from '../../../data/data';
 // database is defined in `db/employees.json` file
 const employees = db.getEmployees();
 
-describe('Lazy Reducers', () => {
+fdescribe('Lazy Reducers', () => {
 
 	// implement `lazyReduce`
 
-	it('summing up numbers', () => {
+	const reducer = (reducerFUn, initial) =>
+		collection => collection.reduce(reducerFun, initial);
+
+	const lazyReduce = (reducerFun, accumulator) =>
+		item => {
+            accumulator = reducerFun(accumulator, item);
+        	return accumulator;
+		};
+
+	fit('summing up numbers', () => {
 		// calculate sum of numbers passed
 		// implement `sumReducer`
-		let myLazySum;
+		let myLazySum = lazyReduce((current, value) => current + value, 0);
 
 		expect(myLazySum(1)).toEqual(1);
 		expect(myLazySum(5)).toEqual(6);
