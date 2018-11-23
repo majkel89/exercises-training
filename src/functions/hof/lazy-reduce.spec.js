@@ -7,7 +7,7 @@ fdescribe('Lazy Reducers', () => {
 
 	// implement `lazyReduce`
 
-	const reducer = (reducerFUn, initial) =>
+	const reducer = (reducerFun, initial) =>
 		collection => collection.reduce(reducerFun, initial);
 
 	const lazyReduce = (reducerFun, accumulator) =>
@@ -44,16 +44,17 @@ fdescribe('Lazy Reducers', () => {
 		expect(myLazyConcat('be')).toEqual('to be or not to be');
 	});
 
-	it('summing up employee salary sum', () => {
+	fit('summing up employee salary sum', () => {
 		// calculate employee salary sum by employees passed
+		const salarySumReducer = (sum = 0, e) => sum + e.salary;
 
 		// VARIANT A: reduce
-		let employeeSalarySum;
+		let employeeSalarySum = reducer(salarySumReducer)(employees.slice(0, 10));
 
 		expect(employeeSalarySum).toEqual(53338);
 
 		// VARIANT B: lazy reduce
-		let employeeSalaryLazySum;
+		let employeeSalaryLazySum = lazyReduce(salarySumReducer);
 
 		let sum;
 		for (let e of employees.slice(0, 10)) {
