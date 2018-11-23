@@ -5,20 +5,23 @@ const employees = db.getEmployees();
 
 fdescribe('Data Sorting', () => {
 
+	const asc = fx => fx;
+	const desc = fx => (...parameters) => -fx(...parameters);
+
+    const getSalary = (e1, e2) => e1.salary - e2.salary;
+
 	fit('can sort simple numbers asc', () => {
-		const lexicalAsc = (a, b) => a - b;
+		const lexical = (a, b) => a - b;
 
 		const numbers = ['2', '5', '10', '14', '22', '12', '4', '21', '23', '24', '1', '15', '20', '13', '3', '11', '25'];
-		const sorted = [ ...numbers ].sort(lexicalAsc);
+		const sorted = [ ...numbers ].sort(asc(lexical));
 
 		expect(sorted).toEqual(['1', '2', '3', '4', '5', '10', '11', '12', '13', '14', '15', '20', '21', '22', '23', '24', '25']);
 	});
 
 	fit('can sort by salary asc', () => {
 		// sort all employees by salary desc
-		const salaryAsc = (e1, e2) => e1.salary - e2.salary;
-
-		const sorted = [ ...employees ].sort(salaryAsc);
+		const sorted = [ ...employees ].sort(asc(getSalary));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].salary).toEqual(1009);
@@ -28,9 +31,9 @@ fdescribe('Data Sorting', () => {
 		expect(sorted[40].salary).toEqual(1250);
 	});
 
-	it('can sort by salary desc', () => {
-		// sort all employees by salary asc
-		const sorted = employees;
+	fit('can sort by salary desc', () => {
+		// sort all employees by salary desc
+		const sorted = [ ...employees ].sort(desc(getSalary));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].salary).toEqual(10001);
