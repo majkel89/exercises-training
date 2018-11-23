@@ -30,10 +30,10 @@ export const hasContractType = contractType =>
 export const isPermanent = hasContractType('permanent');
 export const isContractor = hasContractType('contract');
 
-export const isFullStack = and(
-    and(knowsJs, knows('HTML')),
-    or(knows('Java'), knows('.net'))
-);
+export const isFrontend = and(knowsJs, knows('HTML'));
+export const isBackend = or(knows('Java'), knows('.net'));
+
+export const isFullStack = and(isFrontend, isBackend);
 
 export const hasSalaryAbove = min => employer => min <= employer.salary;
 export const hasSalaryBelow = max => employer => employer.salary <= max;

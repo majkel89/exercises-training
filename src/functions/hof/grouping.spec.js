@@ -11,8 +11,13 @@ import {
     maxTotalPriceReducer,
     byContractType,
     groupBy,
-    groupReducer, byOfficeCountry,
+    groupReducer,
+	byOfficeCountry,
 } from '../../grouping';
+import {
+	isBackend,
+	isFrontend,
+} from "../../filters";
 
 fdescribe('Grouping Reducers', () => {
 
@@ -78,13 +83,13 @@ fdescribe('Grouping Reducers', () => {
 		// a compound value, not a promitive one:
 		//  { salary: NUMBER (sum), count: NUMBER }
 
+        const salaryAndCountReducer = (acc = { salary: 0, count: 0 }, employer) => ({
+            salary: acc.salary + employer.salary,
+            count: acc.count + 1,
+        });
+
 		fit('total salary & count - employees by office country', () => {
 			// group (salary sums and counts) by office country
-			const salaryAndCountReducer = (acc = { salary: 0, count: 0 }, employer) => ({
-				salary: acc.salary + employer.salary,
-				count: acc.count + 1,
-			});
-
             const byCountryReducer = groupReducer(byOfficeCountry, salaryAndCountReducer);
 
             const aggregate = groupBy(byCountryReducer, employees);
@@ -103,11 +108,6 @@ fdescribe('Grouping Reducers', () => {
 
 		fit('total salary & count - employees by office country, by contract type', () => {
 			// group (salary sums and counts) by office country, contract type
-            const salaryAndCountReducer = (acc = { salary: 0, count: 0 }, employer) => ({
-                salary: acc.salary + employer.salary,
-                count: acc.count + 1,
-            });
-
             const byContractTypeReducer = groupReducer(byContractType, salaryAndCountReducer);
 
             const byCountryReducer = groupReducer(byOfficeCountry, byContractTypeReducer, () => ({}));
@@ -134,14 +134,33 @@ fdescribe('Grouping Reducers', () => {
 				});
 		});
 
-		it('total salary & count - employees by office country, by contract type, by skill category', () => {
+		fit('total salary & count - employees by office country, by contract type, by skill category', () => {
 			// group (salary sums and counts) by office country, contract type, skill category
 			// where skillCategory is determined as follows:
 			//  - `backend` if knows `.net` OR `Java`, else:
 			//  - `frontend` if knows `JavaScript` AND `HTML`, else:
 			//  - `other`
 
-			let aggregate;
+            const aggregate = groupBy(
+                groupReducer(
+                    byOfficeCountry,
+                    groupReducer(
+                        byContractType,
+                        groupReducer(employer => {
+                            if (isBackend(employer)) {
+                                return 'backend';
+                            }
+                            if (isFrontend(employer)) {
+                                return 'frontend'
+                            }
+                            return 'other';
+                        }, salaryAndCountReducer),
+                        () => ({})
+                    ),
+                    () => ({})
+                ),
+				employees,
+			);
 
 			expect(aggregate).toEqual({
 				"Poland":{
