@@ -8,7 +8,7 @@ import {
     byType,
     pushReducer,
     totalPriceReducer,
-    maxTotalPriceReducer, countReducer, groupBy, groupReducer,
+    maxTotalPriceReducer, byContractType, groupBy, groupReducer,
 } from '../../grouping';
 
 fdescribe('Grouping Reducers', () => {
@@ -48,7 +48,16 @@ fdescribe('Grouping Reducers', () => {
 			// that one is another challenge
 			// group (count) skills of all employees by contract type
 			// for all employees, count all skills and - group under different contract types
-			let aggregate;
+			// const combinedReducer = (...reducers) => reducers;
+
+			const skillReducer = (skillAggr, employer) => {
+				employer.skills.forEach(skill => skillAggr[skill] = (skillAggr[skill] || 0) + 1);
+				return skillAggr;
+			};
+
+			const subSkillReducer = groupReducer(byContractType, skillReducer, () => ({}));
+
+			const aggregate = groupBy(subSkillReducer, employees);
 
 			expect(aggregate).toEqual({
 				contract: {

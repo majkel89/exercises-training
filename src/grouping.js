@@ -2,6 +2,7 @@ const getItemTotalPrice = item => Math.round(item.price * item.qty * 100) / 100;
 
 export const byKey = k => object => object[k];
 export const byType = byKey('type');
+export const byContractType = byKey('contractType');
 
 export const groupReducer = (grouper, reducer, getInitial = () => {}) =>
     (result, item, ...rest) => {
