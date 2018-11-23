@@ -19,7 +19,9 @@ fdescribe('Lazy Reducers', () => {
 	fit('summing up numbers', () => {
 		// calculate sum of numbers passed
 		// implement `sumReducer`
-		let myLazySum = lazyReduce((current, value) => current + value, 0);
+		const sum = (a = 0, b) => a + b;
+
+		let myLazySum = lazyReduce(sum);
 
 		expect(myLazySum(1)).toEqual(1);
 		expect(myLazySum(5)).toEqual(6);
@@ -27,10 +29,12 @@ fdescribe('Lazy Reducers', () => {
 		expect(myLazySum(30)).toEqual(46);
 	});
 
-	it('concatenating strings', () => {
+	fit('concatenating strings', () => {
 		// calculate text by concatenating phrases passed
 		// implement `concatReducer`
-		let myLazyConcat;
+		const join = (a = '', b) => `${a} ${b}`.trimLeft();
+
+		let myLazyConcat = lazyReduce(join);
 
 		expect(myLazyConcat('to')).toEqual('to');
 		expect(myLazyConcat('be')).toEqual('to be');
