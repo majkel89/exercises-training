@@ -1,28 +1,34 @@
 import API from '../../data/api';
 import { async } from '../../data/async';
 
-describe('coroutines', () => {
+fdescribe('coroutines', () => {
 
 	// consider examples from promises/api.spec.js file
 	// (!) fetch appropriate employees by their IDs: 8569129, 254808831, 58197, 651065
 
-	it('should perform asynchronous calls sequentially', (done) => {
+	fit('should perform asynchronous calls sequentially', (done) => {
 		// write a coroutine which will request data of 4 employees SEQUENTIALLY (when one finished,
 		// request another one) and return list of these 4 employees to make `expect` calls pass
 
+		// API.getEmployee = (id) =>
+
 		function* fetchEmployees(){
-			// coroutine body
+			let e1 = yield API.getEmployee(8569129);
+			let e2 = yield API.getEmployee(254808831);
+			let e3 = yield API.getEmployee(58197);
+			let e4 = yield API.getEmployee(651065);
+			return [e1, e2, e3, e4];
 		}
 
 		async(fetchEmployees)()
 			.then(([e1, e2, e3, e4]) => {
-				expect(e1.salary).toBe(7191)
-				expect(e2.salary).toBe(5941)
-				expect(e3.salary).toBe(4157)
-				expect(e4.salary).toBe(8146)
+				expect(e1.salary).toBe(7191);
+				expect(e2.salary).toBe(5941);
+				expect(e3.salary).toBe(4157);
+				expect(e4.salary).toBe(8146);
 				done();
 			});
-	})
+	});
 
 	it('should perform asynchronous calls sequentially using for..of loop', (done) => {
 		function* fetchEmployees(...ids){
