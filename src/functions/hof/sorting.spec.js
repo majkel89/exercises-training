@@ -9,6 +9,14 @@ fdescribe('Data Sorting', () => {
 	const desc = fx => (...parameters) => -fx(...parameters);
 
     const getSalary = (e1, e2) => e1.salary - e2.salary;
+    const getAge = (e1, e2) => new Date(e1.personalInfo.dateOfBirth) - new Date(e2.personalInfo.dateOfBirth);
+    const getSkillsCount = (e1, e2) => e1.skills.length - e2.skills.length;
+
+    const composeCompare = (...comparators) =>
+		(e1, e2) => {
+    		const comparator = comparators.find(comparator => comparator(e1, e2) !== 0);
+    		return comparator ? comparator(e1, e2) : 0;
+        };
 
 	fit('can sort simple numbers asc', () => {
 		const lexical = (a, b) => a - b;
@@ -43,9 +51,9 @@ fdescribe('Data Sorting', () => {
 		expect(sorted[40].salary).toEqual(9767);
 	});
 
-	it('can sort by age asc', () => {
+	fit('can sort by age asc', () => {
 		// sort all employees by age desc
-		const sorted = employees;
+		const sorted = [ ...employees ].sort(desc(getAge));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].personalInfo.dateOfBirth).toEqual("1995-12-30");
@@ -55,9 +63,9 @@ fdescribe('Data Sorting', () => {
 		expect(sorted[40].personalInfo.dateOfBirth).toEqual("1994-09-16");
 	});
 
-	it('can sort by age desc', () => {
+	fit('can sort by age desc', () => {
 		// sort all employees by age asc
-		const sorted = employees;
+		const sorted = [ ...employees ].sort(asc(getAge));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].personalInfo.dateOfBirth).toEqual("1953-01-17");
@@ -67,9 +75,9 @@ fdescribe('Data Sorting', () => {
 		expect(sorted[40].personalInfo.dateOfBirth).toEqual("1954-06-17");
 	});
 
-	it('can sort by number of skills asc', () => {
+	fit('can sort by number of skills asc', () => {
 		// sort all employees by number of skills desc
-		const sorted = employees;
+		const sorted = [ ...employees ].sort(asc(getSkillsCount));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].skills.length).toEqual(1);
@@ -79,9 +87,9 @@ fdescribe('Data Sorting', () => {
 		expect(sorted[400].skills.length).toEqual(9);
 	});
 
-	it('can sort by number of skills desc', () => {
+	fit('can sort by number of skills desc', () => {
 		// sort all employees by number of skills asc
-		const sorted = employees;
+        const sorted = [ ...employees ].sort(desc(getSkillsCount));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].skills.length).toEqual(22);
@@ -91,10 +99,13 @@ fdescribe('Data Sorting', () => {
 		expect(sorted[400].skills.length).toEqual(13);
 	});
 
-	it('[combined] can sort by number of skills asc - then by age desc', () => {
+	fit('[combined] can sort by number of skills asc - then by age desc', () => {
 		// sort all employees by number of skills desc
 		// if same value then sort by age asc
-		const sorted = employees;
+		const sorted = [ ...employees ].sort(composeCompare(
+			asc(getSkillsCount),
+			asc(getAge),
+		));
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].personalInfo.dateOfBirth).toEqual("1956-01-15");
