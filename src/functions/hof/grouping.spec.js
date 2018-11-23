@@ -9,9 +9,9 @@ import {
     pushReducer,
     totalPriceReducer,
     maxTotalPriceReducer,
-	byContractType,
-	groupBy,
-	groupReducer,
+    byContractType,
+    groupBy,
+    groupReducer, byOfficeCountry,
 } from '../../grouping';
 
 fdescribe('Grouping Reducers', () => {
@@ -28,9 +28,9 @@ fdescribe('Grouping Reducers', () => {
 
 	fit('can also apply calculations to grouped items', () => {
 		// group (sum total prices) shopping data by 'type'
-        const subSumReducer = groupReducer(byType, totalPriceReducer);
+        const byTypeReducer = groupReducer(byType, totalPriceReducer);
 
-		let sumAggregate = groupBy(subSumReducer, shoppingData);
+		let sumAggregate = groupBy(byTypeReducer, shoppingData);
 
 		expect(sumAggregate.Clothes).toEqual(63.6);
 		expect(sumAggregate.Music).toEqual(30.75);
@@ -39,9 +39,9 @@ fdescribe('Grouping Reducers', () => {
 
 	fit('can perform further operations on grouped items', () => {
 		// group (find max total price) shopping data by 'type'
-        const subSumReducer = groupReducer(byType, maxTotalPriceReducer);
+        const byTypeReducer = groupReducer(byType, maxTotalPriceReducer);
 
-        let maxPriceAggregate = groupBy(subSumReducer, shoppingData);
+        let maxPriceAggregate = groupBy(byTypeReducer, shoppingData);
 
 		expect(maxPriceAggregate).toEqual({Clothes: 46.0, Music: 11.90, Food: 33.6});
 	});
@@ -58,9 +58,9 @@ fdescribe('Grouping Reducers', () => {
 				return skillAggr;
 			};
 
-			const subSkillReducer = groupReducer(byContractType, skillReducer);
+			const byContractTypeReducer = groupReducer(byContractType, skillReducer);
 
-			const aggregate = groupBy(subSkillReducer, employees);
+			const aggregate = groupBy(byContractTypeReducer, employees);
 
 			expect(aggregate).toEqual({
 				contract: {
@@ -80,17 +80,14 @@ fdescribe('Grouping Reducers', () => {
 
 		fit('total salary & count - employees by office country', () => {
 			// group (salary sums and counts) by office country
-
-			const byCountry = employer => employer.office[1];
-
 			const salaryAndCountReducer = (acc = { salary: 0, count: 0 }, employer) => ({
 				salary: acc.salary + employer.salary,
 				count: acc.count + 1,
 			});
 
-            const employersReducer = groupReducer(byCountry, salaryAndCountReducer);
+            const byCountryReducer = groupReducer(byOfficeCountry, salaryAndCountReducer);
 
-            const aggregate = groupBy(employersReducer, employees);
+            const aggregate = groupBy(byCountryReducer, employees);
 
 			expect(aggregate).toEqual({
 				'Poland': { salary: 2384863, count: 432 },
@@ -104,9 +101,18 @@ fdescribe('Grouping Reducers', () => {
 			})
 		});
 
-		it('total salary & count - employees by office country, by contract type', () => {
+		fit('total salary & count - employees by office country, by contract type', () => {
 			// group (salary sums and counts) by office country, contract type
-			let aggregate;
+            const salaryAndCountReducer = (acc = { salary: 0, count: 0 }, employer) => ({
+                salary: acc.salary + employer.salary,
+                count: acc.count + 1,
+            });
+
+            const byContractTypeReducer = groupReducer(byContractType, salaryAndCountReducer);
+
+            const byCountryReducer = groupReducer(byOfficeCountry, byContractTypeReducer, () => ({}));
+
+            const aggregate = groupBy(byCountryReducer, employees);
 
 			expect(aggregate).toEqual({
 				'Poland':
