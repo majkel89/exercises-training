@@ -3,24 +3,31 @@ const getItemTotalPrice = item => Math.round(item.price * item.qty * 100) / 100;
 export const byKey = k => object => object[k];
 export const byType = byKey('type');
 
-export const group = (grouper, aggregator) =>
-    collection => collection.reduce((result, item) => {
+export const groupReducer = (grouper, reducer, getInitial = () => {}) =>
+    (result, item, ...rest) => {
         const group = grouper(item);
-        result[group] = aggregator(result[group], item);
+        if (result[group] === undefined) {
+            result[group] = getInitial();
+        }
+        result[group] = reducer(result[group], item, ...rest);
         return result;
-    }, {});
+    };
 
-export const pickAll = (current = [], item) => {
+export const group = (grouper, reducer, getInitial = () => {}) =>
+    collection => collection.reduce(groupReducer(grouper, reducer, getInitial), {});
+
+export const groupBy = (grupperFn, collection) =>
+    collection.reduce(grupperFn, {});
+
+export const pushReducer = (current = [], item) => {
     current.push(item);
     return current;
 };
 
-export const pickCount = (current = 0) => current + 1;
+export const countReducer = (current = 0) => current + 1;
 
-export const pickTotalPrice = (current = 0, item) => {
-    return current + getItemTotalPrice(item);
-};
+export const totalPriceReducer = (current = 0, item) =>
+    current + getItemTotalPrice(item);
 
-export const pickMaxTotalPrice = (current = 0, item) => {
-    return Math.max(current, getItemTotalPrice(item));
-};
+export const maxTotalPriceReducer = (current = 0, item) =>
+    Math.max(current, getItemTotalPrice(item));

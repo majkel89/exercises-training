@@ -22,7 +22,7 @@ import {
     isInOffice,
     isExpiringBetween, isIn, lt, gteq,
 } from "../../filters";
-import {group, pickCount} from "../../grouping";
+import {group, countReducer} from "../../grouping";
 
 fdescribe('Data Filtering', () => {
 	it('can filter employees who know JavaScript', () => {
@@ -135,7 +135,7 @@ fdescribe('Data Filtering', () => {
 	fit('can filter employees who work in small offices (at most 50 people in an office)', () => {
 		const getOfficeId = item => item.office.join('-');
 
-		const getOfficesByEmployersCount = group(getOfficeId, pickCount);
+		const getOfficesByEmployersCount = group(getOfficeId, countReducer);
 
 		const filterAggregate = picker =>
 			collection => Object.entries(collection)

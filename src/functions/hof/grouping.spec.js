@@ -6,41 +6,45 @@ const employees = db.getEmployees();
 import {
     group,
     byType,
-    pickAll,
-    pickTotalPrice,
-    pickMaxTotalPrice,
+    pushReducer,
+    totalPriceReducer,
+    maxTotalPriceReducer, countReducer, groupBy, groupReducer,
 } from '../../grouping';
 
-describe('Grouping Reducers', () => {
+fdescribe('Grouping Reducers', () => {
 
-	it('can split one big collection into smaller grouped collections', () => {
+	fit('can split one big collection into smaller grouped collections', () => {
 		// group (count items) shopping data by 'type'
 		// return an object that, for each shopping data type, has a count of occurences
-		let groupedAggregate = group(byType, pickAll)(shoppingData);
+		let groupedAggregate = group(byType, pushReducer)(shoppingData);
 
 		expect(groupedAggregate.Clothes.length).toEqual(4);
 		expect(groupedAggregate.Music.length).toEqual(3);
 		expect(groupedAggregate.Food.length).toEqual(3);
 	});
 
-	it('can also apply calculations to grouped items', () => {
+	fit('can also apply calculations to grouped items', () => {
 		// group (sum total prices) shopping data by 'type'
-		let sumAggregate = group(byType, pickTotalPrice)(shoppingData);
+        const subSumReducer = groupReducer(byType, totalPriceReducer);
+
+		let sumAggregate = groupBy(subSumReducer, shoppingData);
 
 		expect(sumAggregate.Clothes).toEqual(63.6);
 		expect(sumAggregate.Music).toEqual(30.75);
 		expect(sumAggregate.Food).toEqual(65.1);
 	});
 
-	it('can perform further operations on grouped items', () => {
+	fit('can perform further operations on grouped items', () => {
 		// group (find max total price) shopping data by 'type'
-		let maxPriceAggregate = group(byType, pickMaxTotalPrice)(shoppingData);
+        const subSumReducer = groupReducer(byType, maxTotalPriceReducer);
+
+        let maxPriceAggregate = groupBy(subSumReducer, shoppingData);
 
 		expect(maxPriceAggregate).toEqual({Clothes: 46.0, Music: 11.90, Food: 33.6});
 	});
 
-	describe('Flattening Groups', () => {
-		it('flattens nested arrays (no [].map calls) - count of skills by contract type', () => {
+	fdescribe('Flattening Groups', () => {
+		fit('flattens nested arrays (no [].map calls) - count of skills by contract type', () => {
 			// that one is another challenge
 			// group (count) skills of all employees by contract type
 			// for all employees, count all skills and - group under different contract types
