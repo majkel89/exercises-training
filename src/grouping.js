@@ -4,18 +4,15 @@ export const byKey = k => object => object[k];
 export const byType = byKey('type');
 export const byContractType = byKey('contractType');
 
-export const groupReducer = (grouper, reducer, getInitial = () => {}) =>
+export const groupReducer = (grouper, reducer) =>
     (result, item, ...rest) => {
         const group = grouper(item);
-        if (result[group] === undefined) {
-            result[group] = getInitial();
-        }
         result[group] = reducer(result[group], item, ...rest);
         return result;
     };
 
-export const group = (grouper, reducer, getInitial = () => {}) =>
-    collection => collection.reduce(groupReducer(grouper, reducer, getInitial), {});
+export const group = (grouper, reducer) =>
+    collection => collection.reduce(groupReducer(grouper, reducer), {});
 
 export const groupBy = (grupperFn, collection) =>
     collection.reduce(grupperFn, {});

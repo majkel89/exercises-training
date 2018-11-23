@@ -8,7 +8,10 @@ import {
     byType,
     pushReducer,
     totalPriceReducer,
-    maxTotalPriceReducer, byContractType, groupBy, groupReducer,
+    maxTotalPriceReducer,
+	byContractType,
+	groupBy,
+	groupReducer,
 } from '../../grouping';
 
 fdescribe('Grouping Reducers', () => {
@@ -50,12 +53,12 @@ fdescribe('Grouping Reducers', () => {
 			// for all employees, count all skills and - group under different contract types
 			// const combinedReducer = (...reducers) => reducers;
 
-			const skillReducer = (skillAggr, employer) => {
+			const skillReducer = (skillAggr = {}, employer) => {
 				employer.skills.forEach(skill => skillAggr[skill] = (skillAggr[skill] || 0) + 1);
 				return skillAggr;
 			};
 
-			const subSkillReducer = groupReducer(byContractType, skillReducer, () => ({}));
+			const subSkillReducer = groupReducer(byContractType, skillReducer);
 
 			const aggregate = groupBy(subSkillReducer, employees);
 
@@ -75,9 +78,19 @@ fdescribe('Grouping Reducers', () => {
 		// a compound value, not a promitive one:
 		//  { salary: NUMBER (sum), count: NUMBER }
 
-		it('total salary & count - employees by office country', () => {
+		fit('total salary & count - employees by office country', () => {
 			// group (salary sums and counts) by office country
-			let aggregate;
+
+			const byCountry = employer => employer.office[1];
+
+			const salaryAndCountReducer = (acc = { salary: 0, count: 0 }, employer) => ({
+				salary: acc.salary + employer.salary,
+				count: acc.count + 1,
+			});
+
+            const employersReducer = groupReducer(byCountry, salaryAndCountReducer);
+
+            const aggregate = groupBy(employersReducer, employees);
 
 			expect(aggregate).toEqual({
 				'Poland': { salary: 2384863, count: 432 },
