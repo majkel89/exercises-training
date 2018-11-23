@@ -143,6 +143,7 @@ fdescribe('Grouping Reducers', () => {
 			//  - `other`
 
 			// @TODO write custom reducer for nested group bys
+			// @TODO write lazy grouper
 
             const aggregate = groupBy(
                 groupNestedReducer(

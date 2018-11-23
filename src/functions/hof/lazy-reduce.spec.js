@@ -5,8 +5,6 @@ const employees = db.getEmployees();
 
 fdescribe('Lazy Reducers', () => {
 
-	// implement `lazyReduce`
-
 	const reducer = (reducerFun, initial) =>
 		collection => collection.reduce(reducerFun, initial);
 
