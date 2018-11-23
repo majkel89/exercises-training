@@ -3,19 +3,22 @@ import db from '../../../data/data'
 // database is defined in `db/employees.json` file
 const employees = db.getEmployees();
 
-describe('Data Sorting', () => {
+fdescribe('Data Sorting', () => {
 
-	it('can sort simple numbers asc', () => {
-		// find a bug!
-		const numbers = ['2', '5', '10', '14', '22', '12', '4', '21', '23', '24', '1', '15', '20', '13', '3', '11', '25']
-		const sorted = numbers.sort()
+	fit('can sort simple numbers asc', () => {
+		const lexicalAsc = (a, b) => a - b;
+
+		const numbers = ['2', '5', '10', '14', '22', '12', '4', '21', '23', '24', '1', '15', '20', '13', '3', '11', '25'];
+		const sorted = [ ...numbers ].sort(lexicalAsc);
 
 		expect(sorted).toEqual(['1', '2', '3', '4', '5', '10', '11', '12', '13', '14', '15', '20', '21', '22', '23', '24', '25']);
 	});
 
-	it('can sort by salary asc', () => {
+	fit('can sort by salary asc', () => {
 		// sort all employees by salary desc
-		const sorted = employees;
+		const salaryAsc = (e1, e2) => e1.salary - e2.salary;
+
+		const sorted = [ ...employees ].sort(salaryAsc);
 
 		expect(sorted.length).toEqual(1311);
 		expect(sorted[0].salary).toEqual(1009);
