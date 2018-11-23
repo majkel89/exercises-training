@@ -12,7 +12,8 @@ import {
     byContractType,
     groupBy,
     groupReducer,
-	byOfficeCountry,
+    byOfficeCountry,
+    groupNestedReducer,
 } from '../../grouping';
 import {
 	isBackend,
@@ -110,7 +111,7 @@ fdescribe('Grouping Reducers', () => {
 			// group (salary sums and counts) by office country, contract type
             const byContractTypeReducer = groupReducer(byContractType, salaryAndCountReducer);
 
-            const byCountryReducer = groupReducer(byOfficeCountry, byContractTypeReducer, () => ({}));
+            const byCountryReducer = groupNestedReducer(byOfficeCountry, byContractTypeReducer);
 
             const aggregate = groupBy(byCountryReducer, employees);
 
@@ -141,10 +142,12 @@ fdescribe('Grouping Reducers', () => {
 			//  - `frontend` if knows `JavaScript` AND `HTML`, else:
 			//  - `other`
 
+			// @TODO write custom reducer for nested group bys
+
             const aggregate = groupBy(
-                groupReducer(
+                groupNestedReducer(
                     byOfficeCountry,
-                    groupReducer(
+                    groupNestedReducer(
                         byContractType,
                         groupReducer(employer => {
                             if (isBackend(employer)) {
@@ -154,10 +157,8 @@ fdescribe('Grouping Reducers', () => {
                                 return 'frontend'
                             }
                             return 'other';
-                        }, salaryAndCountReducer),
-                        () => ({})
-                    ),
-                    () => ({})
+                        }, salaryAndCountReducer)
+                    )
                 ),
 				employees,
 			);

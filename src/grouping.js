@@ -15,6 +15,9 @@ export const groupReducer = (grouper, reducer, getInitial = () => {}) =>
         return result;
     };
 
+export const groupNestedReducer = (grouper, reducer) =>
+    groupReducer(grouper, reducer, genObj);
+
 export const group = (grouper, reducer, getInitial = () => ({})) =>
     collection => collection.reduce(groupReducer(grouper, reducer), getInitial());
 
@@ -33,3 +36,5 @@ export const totalPriceReducer = (current = 0, item) =>
 
 export const maxTotalPriceReducer = (current = 0, item) =>
     Math.max(current, getItemTotalPrice(item));
+
+export const genObj = () => ({});
