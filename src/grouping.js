@@ -10,18 +10,17 @@ export const group = (grouper, aggregator) =>
         return result;
     }, {});
 
-export const pickAll = (current, item) => {
-    current = current || [];
+export const pickAll = (current = [], item) => {
     current.push(item);
     return current;
 };
 
-export const pickCount = current => (current || 0) + 1;
+export const pickCount = (current = 0) => current + 1;
 
-export const pickTotalPrice = (current, item) => {
-    return (current || 0) + getItemTotalPrice(item);
+export const pickTotalPrice = (current = 0, item) => {
+    return current + getItemTotalPrice(item);
 };
 
-export const pickMaxTotalPrice = (current, item) => {
-    return Math.max((current || 0), getItemTotalPrice(item));
+export const pickMaxTotalPrice = (current = 0, item) => {
+    return Math.max(current, getItemTotalPrice(item));
 };
