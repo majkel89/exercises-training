@@ -4,7 +4,7 @@ import { getSalarySum, KeyValueMap, zipPairs } from "../employee";
 
 describe('REST API promises', () => {
 
-  fit('handles getNationalities call', async () => {
+  it('handles getNationalities call', async () => {
     // imagine, that API.getNationalities executes AJAX call to a REST API
     // that is asynchronously resolved with list of nationalities
     //
@@ -15,7 +15,7 @@ describe('REST API promises', () => {
     expect(nationalities).toEqual(["US", "UK", "DE", "FR", "PL", "IT", "ES"]);
   });
 
-  fit('handles getEmployee call', () => {
+  it('handles getEmployee call', () => {
 		// imagine, that API.getEmployee executes AJAX call to a REST API
 		// that is asynchronously resolved with data of the employee, given by id
 		// Judd Bogan is id:651065
@@ -28,7 +28,7 @@ describe('REST API promises', () => {
     });
   });
 
-  fit('handles getEmployeesByNationality call', () => {
+  it('handles getEmployeesByNationality call', () => {
     // imagine, that API.getEmployeesByNationality executes AJAX call to a REST API
     // that is asynchronously resolved with list of all employees of a given nationality
     //
@@ -50,7 +50,7 @@ describe('REST API promises', () => {
     // use Promise.all to execute done, each promise can have its .then to manage assertion
   });
 
-  fit('should perform a simple business domain scenario', (done) => {
+  it('should perform a simple business domain scenario', (done) => {
     // write a function which will calculate and return total salaries of employees filtered by nationality
 
     function getTotalNationalSalary(nationality: Nationality): Promise<Money> {
@@ -72,7 +72,7 @@ describe('REST API promises', () => {
     .then(done);
   });
 
-  fit('should perform a complex business domain scenario', () => {
+  it('should perform a complex business domain scenario', () => {
     // similarly to the previous exercise write a function which will
     // calculate and return total salaries of employees of all nationalities
     // available in the system
