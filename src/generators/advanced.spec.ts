@@ -25,7 +25,7 @@ describe('generators', () => {
     }
   }
 
-  fit('can run in infinite loops', () => {
+  it('can run in infinite loops', () => {
     const odds: NumberIterator = oddNumbers();
 
     expect(odds.next().value).toBe(1);
@@ -43,7 +43,7 @@ describe('generators', () => {
     expect(even.next().value).toBe(undefined);
   });
 
-  fit('can be terminated manually using .return()', () => {
+  it('can be terminated manually using .return()', () => {
     const odds: NumberIterator = oddNumbers();
 
     expect(odds.next().value).toBe(1);
@@ -70,7 +70,7 @@ describe('generators', () => {
     }
   }
 
-  fit('can delegate execution to another generator', () => {
+  it('can delegate execution to another generator', () => {
     const numbers: NumberIterator = allNumbers();
 
     expect(numbers.next().value).toBe(undefined);
