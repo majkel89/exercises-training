@@ -35,7 +35,7 @@ describe('Stream Iterators', () => {
     "O:7f2gk4:Zoe:usr:e0Cmj:EP"
   ];
 
-  fit('iterates over data streams and returns a chunk each step', () => {
+  it('iterates over data streams and returns a chunk each step', () => {
     // Write a simple stream generator
     // it will accept some byte streams as they arrive from the data source
     // and each step it will yield a data chunk
@@ -63,7 +63,7 @@ describe('Stream Iterators', () => {
     expect(iterator.next().value).toEqual("Y5p");
   });
 
-  fit('iterates over data streams, aggregates chunks and returns joined 3 pieces each step', () => {
+  it('iterates over data streams, aggregates chunks and returns joined 3 pieces each step', () => {
     // Write a slightly more complex stream generator
     // use the solution from exercise above
     // the new generator will concatenate 3 chunks in a buffer and then emit the buffer (and empty it)
