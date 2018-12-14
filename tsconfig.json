@@ -1,0 +1,20 @@
+{
+  "files": [
+    "src/app.ts"
+  ],
+  "compilerOptions": {
+    "target": "es3",
+    "lib": [
+      "es5",
+      "es2016.array.include",
+      "dom"
+    ],
+    "outDir": "dist",
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types"
+    ],
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  }
+}
